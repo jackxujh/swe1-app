@@ -1,3 +1,4 @@
 # for this Django project
 __pycache__/
 .py[cod]
+db.sqlite3
