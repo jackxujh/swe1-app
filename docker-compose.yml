@@ -30,38 +30,10 @@ services:
     env_file: sample.env
     depends_on: 
       - db
-
-
-  # setups with external postgres database
-
-  web_external_db:
+  
+  createadmin:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    ports: 
-      - "8000:8000"
-    environment: 
-      - DB=postgres
-      - DB_HOST=host.docker.internal
-      - DB_PORT=5432
-      - DB_USER #=jack
-      - DB_PASSWORD #=
-      
-  migration_external_db:
-    build: .
-    command: python manage.py migration
-    environment: 
-      - DB=postgres
-      - DB_HOST=host.docker.internal
-      - DB_PORT=5432
-      - DB_USER #=jack
-      - DB_PASSWORD #=
-
-  test_external_db:
-    build: .
-    command: python manage.py test
-    environment: 
-      - DB=postgres
-      - DB_HOST=host.docker.internal
-      - DB_PORT=5432
-      - DB_USER #=jack
-      - DB_PASSWORD #=
+    command: sh -c "/code/scripts/create_admin.sh"
+    env_file: sample.env
+    depends_on: 
+      - db
