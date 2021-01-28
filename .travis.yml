@@ -38,15 +38,17 @@ jobs:
       - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
       - chmod +x docker-compose
       - sudo mv docker-compose /usr/local/bin
-      - RETRIEVED_TAG=$(docker manifest inspect $DOCKER_REPO:$TRAVIS_BRANCH > /dev/null && echo $TRAVIS_BRANCH || echo 'latest')
+      - export RETRIEVED_TAG=$(docker manifest inspect $DOCKER_REPO:$TRAVIS_BRANCH > /dev/null && echo $TRAVIS_BRANCH || echo 'latest')
+      - export CACHE_BUILD="${DOCKER_REPO}:${RETRIEVED_TAG}"
+      - export TARGET_BUILD="${DOCKER_REPO}:${TRAVIS_BRANCH}"
       # - docker pull $DOCKER_REPO:$RETRIEVED_TAG
 
     script:
-      - docker build --pull -t $DOCKER_REPO:$TRAVIS_BRANCH .
-      - docker-compose build --pull
+      - docker build --cache-from $CACHE_BUILD -t $TARGET_BUILD .
+      - docker-compose build
       - docker-compose up migration
       - docker-compose run test
     
     after_success:
       - echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
-      - docker push $DOCKER_REPO:$TRAVIS_BRANCH
+      - docker push $TARGET_BUILD
