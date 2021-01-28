@@ -2,24 +2,43 @@ language: python
 os: linux
 dist: bionic
 
-python:
-  - 3.7
+jobs:
+  - name: "Regular"
 
-services: 
-  - postgres
+    python:
+      - 3.7
 
-install:
-  - pip install -r requirements.txt
+    services: 
+      - postgres
 
-before_script:
-  - psql -c 'create database swe_app;' -U postgres
-  - python manage.py migrate
-  - python manage.py collectstatic --noinput
+    install:
+      - pip install -r requirements.txt
 
-script:
-  - black --check .
-  - flake8 .
-  - coverage run --source=polls manage.py test
+    before_script:
+      - psql -c 'create database swe_app;' -U postgres
+      - python manage.py migrate
+      - python manage.py collectstatic --noinput
 
-after_script:
-  - coveralls
+    script:
+      - black --check .
+      - flake8 .
+      - coverage run --source=polls manage.py test
+
+    after_script:
+      - coveralls
+  
+  - name: "Containerized"
+
+    env:
+      - DOCKER_COMPOSE_VERSION=1.28.2
+
+    before_install:
+      - sudo rm /usr/local/bin/docker-compose
+      - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+      - chmod +x docker-compose
+      - sudo mv docker-compose /usr/local/bin
+
+    script:
+      - docker-compose build
+      - docker-compose up migration
+      - docker-compose run test
