@@ -42,11 +42,11 @@ jobs:
       # - docker pull $DOCKER_REPO:$RETRIEVED_TAG
 
     script:
+      - docker build --pull -t $DOCKER_REPO:$TRAVIS_BRANCH .
       - docker-compose build --pull
       - docker-compose up migration
       - docker-compose run test
     
-    after_script:
+    after_success:
       - echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
-      - docker build --pull -t $DOCKER_REPO:$TRAVIS_BRANCH .
       - docker push $DOCKER_REPO:$TRAVIS_BRANCH
