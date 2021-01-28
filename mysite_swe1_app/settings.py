@@ -85,6 +85,7 @@ if os.path.isfile(dotenv_file):
 
 database_name = "swe_app"
 
+# This case is only for non-containerized workflow on Travis CI
 if "TRAVIS" in os.environ:
     DATABASES = {
         "default": {
@@ -102,7 +103,7 @@ elif "DB" in os.environ and os.environ["DB"] == "postgres":
             "ENGINE": "django.db.backends.postgresql_psycopg2",
             "NAME": database_name,
             "USER": os.environ.get("DB_USER", "jack"),
-            "PASSWORD": os.environ.get("DB_PASSWORD", "trianglecubism"),
+            "PASSWORD": os.environ.get("DB_PASSWORD", ""),
             "HOST": os.environ.get("DB_HOST", "localhost"),
             "PORT": os.environ.get("DB_PORT", "5432"),
         }

@@ -27,7 +27,7 @@ jobs:
     after_script:
       - coveralls
   
-  - name: "Containerized flow"
+  - name: "Containerized flow - Complete"
 
     env:
       - DOCKER_COMPOSE_VERSION=1.28.2
@@ -42,3 +42,19 @@ jobs:
       - docker-compose build
       - docker-compose up migration
       - docker-compose run test
+
+  - name: "Containerized flow - Django Only"
+
+    env:
+      - DOCKER_COMPOSE_VERSION=1.28.2
+
+    before_install:
+      - sudo rm /usr/local/bin/docker-compose
+      - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+      - chmod +x docker-compose
+      - sudo mv docker-compose /usr/local/bin
+
+    script:
+      - docker-compose build
+      - docker-compose up migration_external_db
+      - docker-compose run test_external_db
