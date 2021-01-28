@@ -31,13 +31,15 @@ jobs:
 
     env:
       - DOCKER_COMPOSE_VERSION=1.28.2
+      - DOCKER_REPO='jackxujh/swe-app'
 
     before_install:
       - sudo rm /usr/local/bin/docker-compose
       - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
       - chmod +x docker-compose
       - sudo mv docker-compose /usr/local/bin
-      - docker pull jackxujh/swe-app:$TRAVIS_BRANCH
+      - RETRIEVED_TAG=$(docker manifest inspect $DOCKER_REPO:$TRAVIS_BRANCH > /dev/null && echo $TRAVIS_BRANCH || echo 'latest')
+      - docker pull $DOCKER_REPO:$RETRIEVED_TAG
 
     script:
       - docker-compose build
@@ -46,5 +48,5 @@ jobs:
     
     after_script:
       - echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
-      - docker build -t jackxujh/swe-app:$TRAVIS_BRANCH .
-      - docker push jackxujh/swe-app:$TRAVIS_BRANCH
+      - docker build -t $DOCKER_REPO:$TRAVIS_BRANCH .
+      - docker push $DOCKER_REPO:$TRAVIS_BRANCH
