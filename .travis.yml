@@ -40,4 +40,5 @@ jobs:
 
     script:
       - docker-compose build
+      - docker-compose up migration
       - docker-compose run test

@@ -3,11 +3,11 @@ version: "3.9"
 services:
   db:
     image: postgres
-    env_file: .env
+    env_file: sample.env
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
-    env_file: .env
+    env_file: sample.env
     ports: 
       - "8000:8000"
     depends_on: 
@@ -15,12 +15,12 @@ services:
   migration:
     build: .
     command: python manage.py migrate
-    env_file: .env
+    env_file: sample.env
     depends_on: 
       - db
   test:
     build: .
     command: python manage.py test
-    env_file: .env
+    env_file: sample.env
     depends_on: 
       - db
