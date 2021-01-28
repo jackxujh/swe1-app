@@ -39,7 +39,7 @@ jobs:
       - chmod +x docker-compose
       - sudo mv docker-compose /usr/local/bin
       - RETRIEVED_TAG=$(docker manifest inspect $DOCKER_REPO:$TRAVIS_BRANCH > /dev/null && echo $TRAVIS_BRANCH || echo 'latest')
-      - docker pull $DOCKER_REPO:$RETRIEVED_TAG
+      # - docker pull $DOCKER_REPO:$RETRIEVED_TAG
 
     script:
       - docker-compose build
