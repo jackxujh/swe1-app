@@ -4,5 +4,6 @@ __pycache__/
 db.sqlite3
 staticfiles/
 .coverage
-venv*
+venv
 env
+.env
