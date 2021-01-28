@@ -42,7 +42,7 @@ jobs:
       # - docker pull $DOCKER_REPO:$RETRIEVED_TAG
 
     script:
-      - docker-compose build
+      - docker-compose build --pull
       - docker-compose up migration
       - docker-compose run test
     
