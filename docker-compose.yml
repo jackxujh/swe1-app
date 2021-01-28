@@ -48,7 +48,7 @@ services:
       
   migration_external_db:
     build: .
-    command: python manage.py test
+    command: python manage.py migration
     environment: 
       - DB=postgres
       - DB_HOST=host.docker.internal
