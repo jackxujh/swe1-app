@@ -2,24 +2,36 @@ language: python
 os: linux
 dist: bionic
 
-python:
-  - 3.7
+jobs:
+  - name: "Regular flow"
 
-services: 
-  - postgres
+    python:
+      - 3.7
 
-install:
-  - pip install -r requirements.txt
+    services: 
+      - postgres
 
-before_script:
-  - psql -c 'create database swe_app;' -U postgres
-  - python manage.py migrate
-  - python manage.py collectstatic --noinput
+    install:
+      - pip install -r requirements.txt
 
-script:
-  - black --check .
-  - flake8 .
-  - coverage run --source=polls manage.py test
+    before_script:
+      - psql -c 'create database swe_app;' -U postgres
+      - python manage.py migrate
+      - python manage.py collectstatic --noinput
 
-after_script:
-  - coveralls
+    script:
+      - black --check .
+      - flake8 .
+      - coverage run --source=polls manage.py test
+
+    after_script:
+      - coveralls
+  
+  - name: "Containerized flow"
+
+    services:
+      - docker
+    
+    script:
+      - docker-compose build
+      - docker-compose run test
