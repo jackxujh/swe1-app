@@ -17,3 +17,8 @@ COPY polls /code/polls
 RUN cd /code
 RUN python manage.py collectstatic --noinput
 RUN chmod a+x /code/scripts/*.sh
+
+RUN useradd -m myuser
+USER myuser
+
+CMD gunicorn mysite_swe1_app.wsgi --bind 0.0.0.0:$PORT
