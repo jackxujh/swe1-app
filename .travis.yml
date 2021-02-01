@@ -3,28 +3,34 @@ os: linux
 dist: bionic
 
 jobs:
-  - name: "Containerized"
+  - name: "Docker"
+
+    services:
+      - docker
+
+    script:
+      - docker build . --tag swe1-app
+      - docker run swe1-app black --check .
+      - docker run swe1-app flake8 .
+
+    after_success:
+      - 
+  
+  - name: "Docker Compose"
 
     env:
       - DOCKER_COMPOSE_VERSION=1.28.2
-      - DOCKER_REPO='jackxujh/swe-app'
 
     before_install:
       - sudo rm /usr/local/bin/docker-compose
       - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
       - chmod +x docker-compose
       - sudo mv docker-compose /usr/local/bin
-      - export RETRIEVED_TAG=$(docker manifest inspect $DOCKER_REPO:$TRAVIS_BRANCH > /dev/null && echo $TRAVIS_BRANCH || echo 'latest')
-      - export CACHE_BUILD="${DOCKER_REPO}:${RETRIEVED_TAG}"
-      - export TARGET_BUILD="${DOCKER_REPO}:${TRAVIS_BRANCH}"
-      # - docker pull $DOCKER_REPO:$RETRIEVED_TAG
 
     script:
-      - docker build --cache-from $CACHE_BUILD -t $TARGET_BUILD .
       - docker-compose build
       - docker-compose up migration
       - docker-compose run test
-    
+
     after_success:
-      - echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
-      - docker push $TARGET_BUILD
+      - 

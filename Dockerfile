@@ -18,6 +18,9 @@ RUN cd /code
 RUN python manage.py collectstatic --noinput
 RUN chmod a+x /code/scripts/*.sh
 
+# changing to non-root user breaks coverage in docker
+# see discussion https://github.com/nedbat/coveragepy/issues/915#issuecomment-574818558
+
 RUN useradd -m myuser
 USER myuser
 
