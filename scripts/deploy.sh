@@ -21,10 +21,7 @@ fi
 
 echo "Will deploy to $DEPLOYMENT_APP on Heroku."
 
-# Login, push and prepare for release
-
-heroku auth:token
-heroku container:login
+# Build, push and prepare for release
 
 heroku container:push web -a $DEPLOYMENT_APP
 heroku container:release web -a $DEPLOYMENT_APP
