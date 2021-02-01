@@ -3,7 +3,7 @@
 black --check .
 flake8 .
 python manage.py makemigrations
-python manage.py migrate
+sh -c ./scripts/init_release.sh
 coverage run --source=polls manage.py test
 
 coveralls
