@@ -16,6 +16,7 @@ jobs:
 
     script:
       - docker-compose build
+      - docker-compose up -d db
       - docker-compose up migration
       - docker-compose run test
 
