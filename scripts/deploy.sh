@@ -26,3 +26,6 @@ heroku container:login
 
 heroku container:push web -a $DEPLOYMENT_APP
 heroku container:release web -a $DEPLOYMENT_APP
+
+heroku run -a $DEPLOYMENT_APP python manage.py collectstatic
+heroku run -a $DEPLOYMENT_APP python manage.py migrate
