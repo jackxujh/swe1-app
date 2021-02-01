@@ -14,6 +14,8 @@ jobs:
         -s`-`uname -m` > docker-compose
       - chmod +x docker-compose
       - sudo mv docker-compose /usr/local/bin
+      - docker pull registry.heroku.com/swe-app-neo/web || true
+      - docker pull registry.heroku.com/swe-app-neo-staging/web || true
       - docker-compose build
 
     script:
