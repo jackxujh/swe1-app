@@ -12,6 +12,8 @@ jobs:
       - docker build . --tag swe1-app
       - docker run swe1-app black --check .
       - docker run swe1-app flake8 .
+      - docker run swe1-app coverage run --source=polls manage.py test
+      - docker run swe1-app coveralls
 
     after_success:
       - 
