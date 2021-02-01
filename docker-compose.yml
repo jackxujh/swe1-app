@@ -30,6 +30,8 @@ services:
     env_file: local-dev.env
     environment: 
       - COVERALLS_REPO_TOKEN
+      - TRAVIS_JOB_ID
+      - TRAVIS_BRANCH
     volumes: 
       - .git:/code/.git
     depends_on: 
