@@ -30,10 +30,13 @@ services:
     env_file: local-dev.env
     environment: 
       - COVERALLS_REPO_TOKEN
-      - TRAVIS_JOB_ID
-      - TRAVIS_BRANCH
+      - CI_NAME=travis-pro
+      - CI_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
+      - CI_BUILD_URL=$TRAVIS_BUILD_WEB_URL
+      - CI_BRANCH=$TRAVIS_BRANCH
+      - CI_PULL_REQUEST=$TRAVIS_PULL_REQUEST
     volumes: 
-      - .git:/code/.git
+      - .git:/code/.git # expose to coveralls.io
     depends_on: 
       - db
   
