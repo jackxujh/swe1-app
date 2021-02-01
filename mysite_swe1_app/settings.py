@@ -96,7 +96,7 @@ if "DB" in os.environ and os.environ["DB"] == "postgres":
 # deployment config
 else:
     DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
-print(DATABASES)
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 

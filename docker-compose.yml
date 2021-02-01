@@ -26,8 +26,12 @@ services:
 
   test:
     build: .
-    command: python manage.py test
+    command: sh -c "/code/scripts/test_suite.sh"
     env_file: local-dev.env
+    environment: 
+      - COVERALLS_REPO_TOKEN
+    volumes: 
+      - .git:/code/.git
     depends_on: 
       - db
   
