@@ -2,16 +2,16 @@ version: "3.9"
    
 services:
 
-  # setups with postgres database in a container
+  # for local development
 
   db:
     image: postgres
-    env_file: sample.env
+    env_file: local-dev.env
 
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
-    env_file: sample.env
+    env_file: local-dev.env
     ports: 
       - "8000:8000"
     depends_on: 
@@ -20,20 +20,26 @@ services:
   migration:
     build: .
     command: python manage.py migrate
-    env_file: sample.env
+    env_file: local-dev.env
     depends_on: 
       - db
 
   test:
     build: .
-    command: python manage.py test
-    env_file: sample.env
+    command: sh -c "/code/scripts/test_suite.sh"
+    env_file: local-dev.env
+    environment: 
+      - COVERALLS_REPO_TOKEN
+      - TRAVIS_JOB_ID
+      - TRAVIS_BRANCH
+    volumes: 
+      - .git:/code/.git # expose to coveralls.io
     depends_on: 
       - db
   
   createadmin:
     build: .
     command: sh -c "/code/scripts/create_admin.sh"
-    env_file: sample.env
+    env_file: local-dev.env
     depends_on: 
       - db
