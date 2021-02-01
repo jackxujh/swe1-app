@@ -3,7 +3,7 @@ set -e
 
 TARGET=$1
 
-echo $TARGET
+# Check for deployment destination
 
 PRODUCTION_TARGET="production"
 STATING_TARGET="staging"
@@ -21,6 +21,8 @@ fi
 
 echo "Will deploy to $DEPLOYMENT_APP on Heroku."
 
+# Login, push and prepare for release
+
 heroku auth:token
 heroku container:login
 
@@ -29,3 +31,7 @@ heroku container:release web -a $DEPLOYMENT_APP
 
 heroku run -a $DEPLOYMENT_APP python manage.py collectstatic
 heroku run -a $DEPLOYMENT_APP python manage.py migrate
+
+# Quick Test of the new deployment
+
+curl -I "http://$DEPLOYMENT_APP.herokuapp.com/polls/"
