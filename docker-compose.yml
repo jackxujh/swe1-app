@@ -2,13 +2,11 @@ version: "3.9"
    
 services:
 
-  # for local development
-
   db:
     image: postgres
     env_file: local-dev.env
 
-  web:
+  djrun:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     env_file: local-dev.env
@@ -19,7 +17,7 @@ services:
 
   migration:
     build: .
-    command: python manage.py migrate
+    command: sh -c "/code/scripts/init_release.sh"
     env_file: local-dev.env
     depends_on: 
       - db

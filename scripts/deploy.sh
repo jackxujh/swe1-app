@@ -26,8 +26,7 @@ echo "Will deploy to $DEPLOYMENT_APP on Heroku."
 heroku container:push web -a $DEPLOYMENT_APP
 heroku container:release web -a $DEPLOYMENT_APP
 
-heroku run -a $DEPLOYMENT_APP python manage.py collectstatic --no-input
-heroku run -a $DEPLOYMENT_APP python manage.py migrate
+heroku run -a $DEPLOYMENT_APP 'sh -c ./scripts/init_release.sh'
 
 # Quick Test of the new deployment
 
