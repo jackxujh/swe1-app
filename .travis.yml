@@ -22,6 +22,7 @@ jobs:
       - docker-compose run test
 
     deploy:
+      provider: heroku
       api_key:
         secure: QiGGE2C/aNfFEDjcewvFFZUSiWMOW2MLubwMbDD0flbLG9EXZatFj9NY3U3taZgTgp7gsX4CaW24/D1IyM9f29cXFNR8dpQVnXYsInEdwGNv0eqJxtRUX0O5IiylUCmMNueEqhUNi1pSObSE+c65DItJFQ9Sg5lBvQPj0x/kc5RnyC+o1FYN4/jQet8Ta4AagsUIoHVLOllkbJcDlBmMwHhRgOHox6sunEs1GOJgbPB8CB5GW2BRRd/XYS5XsNnMDtT9BmJzsRmRzxsyLX1Soe+pwTUEM7weoRUQcwJ1l+A9dUOITcwhiAaGRfToTLpKVTQTTcbQxDvVUh6+RfG+9TdfS0sbXSfTItmKIejfmlLlw0E+Thv1DtnMiFBdyNgn1LDfW4Kr5FL+3OT++OoNpI/yIM5+925jEkBHpYjV1G24dDnUkZ32AvDiedJzU/0WFHuw4kwAdSkcg2KP9t1/uLhVX+eB+uCDbWk0Nz3YohMW9TTShcJm/+Ch0OUGoc9B3qqucP4bOJMqE4ssFAOMfSWdTOXXLYW5xq8fRG+nCyv242Im7T+GOj/sxfS+xNo7/Y5X5ENDJ7KosK4lsJJ+JBNLulOloFaRRxQBi+wHZvrPO8/IdJ2oFThP7t1P55KKXOwuczD+yckcsrMPQtjdLgyoSiYGSgyEN70/jFOMApk=
       app:
