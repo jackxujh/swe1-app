@@ -3,22 +3,34 @@ os: linux
 dist: bionic
 
 jobs:
-  - name: "Containerized"
-
+  - name: test
     env:
       - DOCKER_COMPOSE_VERSION=1.28.2
 
     before_install:
       - sudo rm /usr/local/bin/docker-compose
-      - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+      - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+        -s`-`uname -m` > docker-compose
       - chmod +x docker-compose
       - sudo mv docker-compose /usr/local/bin
+      
+      - heroku auth:token
+      - heroku container:login
+      - docker pull registry.heroku.com/swe-app-neo/web || true
+      - docker pull registry.heroku.com/swe-app-neo-staging/web || true
+      - docker-compose build
 
     script:
-      - docker-compose build
       - docker-compose up -d db
       - docker-compose up migration
       - docker-compose run test
 
-    after_success:
-      - 
+    deploy:
+      - provider: script
+        script: bash scripts/deploy.sh production
+        on:
+          branch: main
+      - provider: script
+        script: bash scripts/deploy.sh staging
+        on:
+          all_branches: true
