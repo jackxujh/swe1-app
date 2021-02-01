@@ -34,4 +34,4 @@ heroku run -a $DEPLOYMENT_APP python manage.py migrate
 
 # Quick Test of the new deployment
 
-curl -I "http://$DEPLOYMENT_APP.herokuapp.com/polls/"
+curl -f -I "http://$DEPLOYMENT_APP.herokuapp.com/polls/"
