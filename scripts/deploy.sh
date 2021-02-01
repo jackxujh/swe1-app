@@ -3,6 +3,8 @@ set -e
 
 TARGET=$1
 
+echo $TARGET
+
 PRODUCTION_TARGET="production"
 STATING_TARGET="staging"
 
