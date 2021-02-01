@@ -18,10 +18,10 @@ RUN cd /code
 RUN python manage.py collectstatic --noinput
 RUN chmod a+x /code/scripts/*.sh
 
-# changing to non-root user breaks coverage in docker
+# changing to non-root user breaks `coverage` command in docker
 # see discussion https://github.com/nedbat/coveragepy/issues/915#issuecomment-574818558
 
-RUN useradd -m myuser
-USER myuser
+# RUN useradd -m myuser
+# USER myuser
 
 CMD gunicorn mysite_swe1_app.wsgi --bind 0.0.0.0:$PORT
