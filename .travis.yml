@@ -20,3 +20,14 @@ jobs:
       - docker-compose up -d db
       - docker-compose up migration
       - docker-compose run test
+
+    deploy:
+      - provider: script
+        script: bash scripts/deploy.sh production
+        on:
+          branch: main
+      - provider: script
+        script: bash scripts/deploy.sh staging
+        on:
+          all_branches: true
+          condition: NOT $TRAVIS_BRANCH = "main"
