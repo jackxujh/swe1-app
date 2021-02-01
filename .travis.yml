@@ -14,9 +14,9 @@ jobs:
         -s`-`uname -m` > docker-compose
       - chmod +x docker-compose
       - sudo mv docker-compose /usr/local/bin
+      - docker-compose build
 
     script:
-      - docker-compose build
       - docker-compose up -d db
       - docker-compose up migration
       - docker-compose run test
