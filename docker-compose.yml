@@ -6,7 +6,7 @@ services:
     image: postgres
     env_file: symphony.env
 
-  djrun:
+  web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     env_file: symphony.env
