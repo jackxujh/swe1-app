@@ -83,24 +83,7 @@ WSGI_APPLICATION = "mysite_swe1_app.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-database_name = "swe_app"
-
-# local development config
-# when using DATABASE_URL locally, there are some SSL issues at the moment
-if "DB" in os.environ and os.environ["DB"] == "postgres":
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": database_name,
-            "USER": os.environ.get("POSTGRES_USER", "postgres"),
-            "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
-            "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
-            "PORT": os.environ.get("POSTGRES_PORT", "5432"),
-        }
-    }
-# deployment config
-else:
-    DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
+DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
